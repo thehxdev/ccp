@@ -1,0 +1,6 @@
+.ccls*
+a.out
+build/
+shared/
+*.so*
+vgcore*
