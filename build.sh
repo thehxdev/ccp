@@ -6,7 +6,6 @@ CC="gcc"
 FLAGS="-std=c17 -Wall -Wextra -O2 "
 FLAGS+="-Werror -Wno-unused-result -Wno-unused-variable -Wno-unused-parameter "
 INCLUDE="-I./lib"
-
 FILES="./lib/ccp/*.c ./lib/ccp/utils/*.c"
 
 function make_lib() {
@@ -19,8 +18,22 @@ function make_lib() {
 }
 
 function compile_example() {
-    $CC -Wl,-rpath ./shared -lccp -L ./shared $FLAGS $INCLUDE ./main.c
+    mkdir -p ./example
+    $CC $FLAGS $INCLUDE -shared -fPIC $FILES -o ./example/libccp.so
+    $CC -Wl,-rpath ./example -lccp -L ./example $FLAGS $INCLUDE -o ./example/a.out ./example.c
 }
 
-make_lib
-#compile
+
+function clean() {
+    rm -rf ./example
+    rm -rf ./build
+}
+
+if [[ "$1" == "-b" ]]; then
+    make_lib
+elif [[ "$1" == "-e" ]]; then
+    compile_example
+elif [[ "$1" == "-c" ]]; then
+    clean
+fi
+
