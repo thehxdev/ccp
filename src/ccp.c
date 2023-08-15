@@ -3,11 +3,11 @@
 #include <string.h>
 
 // CCP
-#include <ccp/ccp.h>
-#include <ccp/types.h>
-#include <ccp/ccp_list.h>
-#include <ccp/ccp_flag.h>
-#include <ccp/utils/str.h>
+#include "ccp.h"
+#include "types.h"
+#include "ccp_list.h"
+#include "ccp_flag.h"
+#include "str.h"
 
 
 
@@ -53,7 +53,7 @@ int ccp_parse(FlagSet *fsp) {
             // invalid command-line arg
             // free FlagSet and return 2
             // to exit
-            ccp_flagset_free(fsp);
+            //ccp_flagset_free(fsp);
             return 2;
         }
 
@@ -64,7 +64,7 @@ int ccp_parse(FlagSet *fsp) {
             continue;
         } else if (tmp->dtype == INT) {
             if (i + 1 >= fsp->argc) {
-                ccp_flagset_free(fsp);
+                //ccp_flagset_free(fsp);
                 return 1;
             }
             int tmpData = 0;
@@ -79,7 +79,7 @@ int ccp_parse(FlagSet *fsp) {
             continue;
         } else if (tmp->dtype == DOUBLE) {
             if (i + 1 >= fsp->argc) {
-                ccp_flagset_free(fsp);
+                //ccp_flagset_free(fsp);
                 return 1;
             }
             double tmpData = 0.0;
@@ -94,7 +94,7 @@ int ccp_parse(FlagSet *fsp) {
             continue;
         } else if (tmp->dtype == STRING) {
             if (i + 1 >= fsp->argc) {
-                ccp_flagset_free(fsp);
+                //ccp_flagset_free(fsp);
                 return 1;
             }
             tmp->val = calloc(sizeof(char), strlen(fsp->argv[i + 1]) + 1);

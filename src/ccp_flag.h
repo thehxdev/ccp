@@ -2,7 +2,9 @@
 #define CCP_FLAG_H
 
 #include <stdbool.h>
-#include <ccp/types.h>
+
+// CCP
+#include "types.h"
 
 /**
  * WARNING!

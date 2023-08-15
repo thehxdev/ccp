@@ -2,10 +2,10 @@
 #include <string.h>
 
 // CCP
-#include <ccp/ccp_list.h>
-#include <ccp/ccp_flag.h>
-#include <ccp/utils/str.h>
-#include <ccp/utils/macros.h>
+#include "ccp_list.h"
+#include "ccp_flag.h"
+#include "str.h"
+#include "macros.h"
 
 
 Flag *ccp_flag_init(const char *name, const char *help) {

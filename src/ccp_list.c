@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
-#include <ccp/ccp_flag.h>
-#include <ccp/ccp_list.h>
+
+// CCP
+#include "ccp_flag.h"
+#include "ccp_list.h"
 
 
 FlagList *ccp_list_init() {

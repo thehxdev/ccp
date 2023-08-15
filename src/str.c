@@ -1,7 +1,7 @@
 #include <string.h>
 
 // CCP
-#include <ccp/utils/str.h>
+#include "str.h"
 
 bool str_hasPrefix(const char *str, const char *pre) {
     if (!str || !pre)
@@ -33,10 +33,10 @@ bool str_containsChar(const char *str, const char ch) {
 
 
 int str_isFlag(const char *str) {
-    if (str_hasPrefix(str, "-"))
-        return 1;
-    else if (str_hasPrefix(str, "--"))
+    if (str_hasPrefix(str, "--"))
         return 2;
+    else if (str_hasPrefix(str, "-"))
+        return 1;
 
     return 0;
 }

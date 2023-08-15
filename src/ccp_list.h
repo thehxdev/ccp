@@ -1,7 +1,8 @@
 #ifndef CCP_LIST_H
 #define CCP_LIST_H
 
-#include <ccp/types.h>
+// CCP
+#include "types.h"
 
 
 /**

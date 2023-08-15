@@ -2,8 +2,8 @@
 #define CCP_H
 
 // CCP
-#include <ccp/types.h>
-#include <ccp/ccp_flag.h>
+#include "types.h"
+#include "ccp_flag.h"
 
 
 /**
@@ -33,8 +33,8 @@ int ccp_flagset_free(FlagSet *fsp);
  *
  * @fsp: pointer to a FlagSet instance
  * @ret: 0 no error
- *       1 value not provided for flag (free fsp)
- *       2 invalid command-line argument (free fsp)
+ *       1 value not provided for flag
+ *       2 invalid command-line argument
  */
 int ccp_parse(FlagSet *fsp);
 

@@ -1,6 +1,9 @@
 .ccls*
+*.o
 a.out
-build/
-shared/
+objs/
+release/
+example
 *.so*
+*.a
 vgcore*

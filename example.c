@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ccp/ccp.h>
+#include <ccp.h>
 
 
 int main(int argc, char *argv[]) {
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
     err = ccp_parse(fs);
     if (err != 0)
-        goto ret;
+        return err;
 
     int *userNum = (int*) ccp_getVal(fs, "num");
     int *userNumDef = (int*) ccp_getDefVal(fs, "num");
