@@ -33,8 +33,10 @@ int ccp_flagset_free(FlagSet *fsp);
  *
  * @fsp: pointer to a FlagSet instance
  * @ret: 0 no error
- *       1 value not provided for flag
- *       2 invalid command-line argument
+ *       1 No arguments provided
+ *       2 Print help message
+ *       3 invalid command-line argument
+ *       4 value not provided for flag
  */
 int ccp_parse(FlagSet *fsp);
 
@@ -63,5 +65,15 @@ void *ccp_getVal(FlagSet *fsp, const char *name);
  * @ret: pointer to default value flag holdes | NULL
  */
 void *ccp_getDefVal(FlagSet *fsp, const char *name);
+
+
+/**
+ * print help message
+ *
+ * @fsp: pointer to a FlagSet instance
+ *
+ * @ret: 0 no error | 1 error
+ */
+int ccp_print_help(FlagSet *fsp);
 
 #endif // CCP_H
