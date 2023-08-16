@@ -48,7 +48,6 @@ int ccp_parse(FlagSet *fsp) {
     }
 
     if (strcmp(fsp->argv[1], "-help") == 0
-        || strcmp(fsp->argv[1], "-h") == 0
         || strcmp(fsp->argv[1], "--help") == 0) {
         ccp_print_help(fsp);
         return 2;
@@ -176,7 +175,7 @@ int ccp_print_help(FlagSet *fsp) {
         }
         tmp = tmp->next;
     }
-    printf("  -h/-help: Print this help message\n");
+    printf("  -help: Print this help message\n");
 
     return 0;
 }
