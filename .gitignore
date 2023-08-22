@@ -5,5 +5,5 @@ objs/
 release/
 example
 *.so*
-*.a
+*.a*
 vgcore*
