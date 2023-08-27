@@ -24,6 +24,5 @@ make
 
 ## Known limitations
 
-- Using Doubly Linked-lists to store flags instead of Hash-tables. (I don't know how to implement HTs in C yet)
 - Bad code style and lots of duplication that can be solved with more functions and macros
 
