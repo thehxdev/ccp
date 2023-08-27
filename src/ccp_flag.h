@@ -7,6 +7,7 @@
 // CCP
 #include "types.h"
 
+
 /**
  * WARNING!
  * initialize a new flag
@@ -151,6 +152,6 @@ int ccp_flag_registerDouble(FlagSet *fsp,
  *
  * @ret: 0 no error | 1 error
  */
-int ccp_flag_free(Flag *fp);
+void ccp_flag_free(Flag *fp);
 
 #endif

@@ -51,7 +51,7 @@ int ccp_parse(FlagSet *fsp);
  *
  * @ret: pointer to data that flag holdes | NULL
  */
-void *ccp_getVal(FlagSet *fsp, const char *name);
+void *ccp_getval(FlagSet *fsp, const char *name);
 
 
 /**
@@ -64,7 +64,7 @@ void *ccp_getVal(FlagSet *fsp, const char *name);
  *
  * @ret: pointer to default value flag holdes | NULL
  */
-void *ccp_getDefVal(FlagSet *fsp, const char *name);
+void *ccp_get_defval(FlagSet *fsp, const char *name);
 
 
 /**

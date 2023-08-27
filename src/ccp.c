@@ -5,8 +5,8 @@
 // CCP
 #include "ccp.h"
 #include "types.h"
-#include "ccp_list.h"
 #include "ccp_flag.h"
+#include "ccp_ht.h"
 #include "str.h"
 
 
@@ -20,7 +20,7 @@ FlagSet *ccp_flagset_init(int argc, char *argv[]) {
 
     nfs->argc = argc;
     nfs->argv = argv;
-    nfs->registerdFlags = ccp_list_init();
+    nfs->registerdFlags = ccp_ht_new();
     if (!nfs->registerdFlags) {
         ccp_flagset_free(nfs);
         return NULL;
@@ -34,7 +34,8 @@ int ccp_flagset_free(FlagSet *fsp) {
     if (!fsp)
         return 1;
 
-    ccp_list_free(fsp->registerdFlags);
+    //ccp_list_free(fsp->registerdFlags);
+    ccp_ht_free(fsp->registerdFlags, ccp_flag_free);
     free(fsp);
     return 0;
 }
@@ -62,7 +63,7 @@ int ccp_parse(FlagSet *fsp) {
             return 2;
         }
 
-        tmp = ccp_list_find(fsp->registerdFlags, (fsp->argv[i] + isFlag));
+        tmp = ccp_ht_getflag(fsp->registerdFlags, (fsp->argv[i] + isFlag));
         if (!tmp) {
             // invalid command-line arg
             return 3;
@@ -151,11 +152,11 @@ int ccp_parse(FlagSet *fsp) {
 }
 
 
-void *ccp_getVal(FlagSet *fsp, const char *name) {
+void *ccp_getval(FlagSet *fsp, const char *name) {
     if (!fsp || !name)
         return NULL;
 
-    Flag *tmp = ccp_list_find(fsp->registerdFlags, name);
+    Flag *tmp = ccp_ht_getflag(fsp->registerdFlags, name);
     if (!tmp)
         return NULL;
 
@@ -163,11 +164,11 @@ void *ccp_getVal(FlagSet *fsp, const char *name) {
 }
 
 
-void *ccp_getDefVal(FlagSet *fsp, const char *name) {
+void *ccp_get_defval(FlagSet *fsp, const char *name) {
     if (!fsp || !name)
         return NULL;
 
-    Flag *tmp = ccp_list_find(fsp->registerdFlags, name);
+    Flag *tmp = ccp_ht_getflag(fsp->registerdFlags, name);
     if (!tmp)
         return NULL;
 
@@ -181,13 +182,16 @@ int ccp_print_help(FlagSet *fsp) {
 
     fprintf(stdout, "%s Usage:\n", fsp->argv[0]);
 
-    Flag *tmp = fsp->registerdFlags->head;
-    if (!tmp) {
+    if (fsp->registerdFlags->len == 0) {
         fprintf(stderr, "No flags registerd.\n");
         return 1;
     }
 
-    while (tmp != NULL) {
+    CCP_HT *fht = fsp->registerdFlags;
+    Flag *tmp = NULL;
+    for (size_t i = 0; i < fht->len; i++) {
+        tmp = ccp_ht_getflag(fht, fht->keys[i]);
+
         switch(tmp->dtype) {
             case BOOL:
                 if (*(bool*)tmp->defaultVal == true)

@@ -55,11 +55,11 @@ int main(int argc, char *argv[]) {
     // if flag is not registerd, return NULL.
     // if flag not appeare in arguments default value will
     // returned.
-    int *age = (int*) ccp_getVal(fs, "age");
-    int *defAge = (int*) ccp_getDefVal(fs, "age");
-    bool *verbose = (bool*) ccp_getVal(fs, "verbose");
-    char *name = (char*) ccp_getVal(fs, "name");
-    double *pi = (double*) ccp_getVal(fs, "pi");
+    int *age = (int*) ccp_getval(fs, "age");
+    int *defAge = (int*) ccp_get_defval(fs, "age");
+    bool *verbose = (bool*) ccp_getval(fs, "verbose");
+    char *name = (char*) ccp_getval(fs, "name");
+    double *pi = (double*) ccp_getval(fs, "pi");
 
     printf("C is cool!\n");
     if (*verbose) {

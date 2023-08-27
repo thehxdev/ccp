@@ -3,12 +3,13 @@ OBJS_DIR := ./objs
 OUT_DIR := ./release
 OUT_HEADERS_DIR := ./release/ccp
 
-OBJS := ccp.o ccp_flag.o ccp_list.o str.o
+OBJS := ccp.o ccp_flag.o ccp_ht.o str.o
 LIBCCP_A  := libccp.a
 
 CC := gcc
-CFLAGS := -std=c17 -Wall -Wextra -ggdb
+CFLAGS := -std=c17 -Wall -Wextra
 CFLAGS += -Werror -Wno-unused-result
+CFLAGS += -ggdb -Og
 
 
 $(LIBCCP_A): dir $(OBJS)
