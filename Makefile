@@ -1,33 +1,31 @@
 SRC_DIR := ./src
-OBJS_DIR := ./objs
 OUT_DIR := ./release
 OUT_HEADERS_DIR := ./release/ccp
 
-OBJS := ccp.o ccp_flag.o ccp_ht.o str.o
-LIBCCP_A  := libccp.a
+SRC_FILES := $(wildcard $(SRC_DIR)/*.c)
+OBJS := $(SRC_FILES:.c=.o)
+LIBCCP_A  := $(OUT_DIR)/libccp.a
 
 CC := gcc
 CFLAGS := -std=c17 -Wall -Wextra
 CFLAGS += -Werror -Wno-unused-result
 CFLAGS += -ggdb -Og
+LIBS := -L$(OUT_DIR) -lccp
 
 
-$(LIBCCP_A): dir $(OBJS)
-	ar -rsc $(OUT_DIR)/$(LIBCCP_A) $(foreach file,$(OBJS),$(OBJS_DIR)/$(file))
+$(LIBCCP_A): $(OBJS)
+	@mkdir -p $(OUT_DIR) $(OUT_HEADERS_DIR)
+	ar -rsc $(LIBCCP_A) $(OBJS)
 	cp $(SRC_DIR)/*.h $(OUT_HEADERS_DIR)
 
 
 %.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJS_DIR)
-	$(CC) $(CFLAGS) -c -o $(OBJS_DIR)/$*.o $(SRC_DIR)/$*.c
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/$*.c
 
 
 example: example.c $(LIBCCP_A)
 	$(CC) $(CFLAGS) -I$(OUT_HEADERS_DIR) -o example.o -c $<
-	$(CC) -o example ./example.o -L$(OUT_DIR) -lccp
-
-dir:
-	@mkdir -p $(OUT_DIR) $(OUT_HEADERS_DIR)
+	$(CC) -o example ./example.o $(LIBS)
 
 clean:
-	rm -rf ./release $(OBJS_DIR) a.out example *.o
+	rm -rf $(OUT_DIR) example *.o $(SRC_DIR)/*.o
