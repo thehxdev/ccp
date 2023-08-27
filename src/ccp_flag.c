@@ -9,7 +9,8 @@
 
 
 Flag *ccp_flag_init(const char *name, const char *help) {
-    if (str_hasPrefix(name, "-") || str_hasPrefix(name, "--"))
+    // The flag name should not start with dash
+    if (str_isFlag(name) > 0)
         return NULL;
 
     Flag *nf = (Flag*) malloc(sizeof(Flag));
@@ -17,9 +18,17 @@ Flag *ccp_flag_init(const char *name, const char *help) {
         return NULL;
 
     nf->name = (char*) calloc(sizeof(char), strlen(name) + 1);
+    if (!nf->name) {
+        ccp_flag_free(nf);
+        return NULL;
+    }
     strcpy(nf->name, name);
 
     nf->help = (char*) calloc(sizeof(char), strlen(help) + 1);
+    if (!nf->help) {
+        ccp_flag_free(nf);
+        return NULL;
+    }
     strcpy(nf->help, help);
 
     nf->next = NULL;
@@ -72,6 +81,134 @@ int ccp_flag_registerInt(FlagSet *fsp,
     }
     memmove(fp->defaultVal, &def, sizeof(int));
     fp->dtype = INT;
+
+    int err = ccp_list_append(fsp->registerdFlags, fp);
+    if (err != 0) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    return 0;
+}
+
+
+int ccp_flag_registerInt32(FlagSet *fsp,
+                           const char *name,
+                           const int32_t def,
+                           const char *help)
+{
+    if (!fsp || !name || !help)
+        return 1;
+
+    if (ccp_flag_checkExist(fsp->registerdFlags, name))
+        return 1;
+    
+    Flag *fp = ccp_flag_init(name, help);
+    if (!fp)
+        return 1;
+
+    fp->defaultVal = malloc(sizeof(int32_t));
+    if (!fp->defaultVal) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    memmove(fp->defaultVal, &def, sizeof(int32_t));
+    fp->dtype = INT32;
+
+    int err = ccp_list_append(fsp->registerdFlags, fp);
+    if (err != 0) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    return 0;
+}
+
+
+int ccp_flag_registerInt64(FlagSet *fsp,
+                           const char *name,
+                           const int64_t def,
+                           const char *help)
+{
+    if (!fsp || !name || !help)
+    return 1;
+
+    if (ccp_flag_checkExist(fsp->registerdFlags, name))
+        return 1;
+    
+    Flag *fp = ccp_flag_init(name, help);
+    if (!fp)
+        return 1;
+
+    fp->defaultVal = malloc(sizeof(int64_t));
+    if (!fp->defaultVal) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    memmove(fp->defaultVal, &def, sizeof(int64_t));
+    fp->dtype = INT64;
+
+    int err = ccp_list_append(fsp->registerdFlags, fp);
+    if (err != 0) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    return 0;
+}
+
+
+int ccp_flag_registerUInt32(FlagSet *fsp,
+                            const char *name,
+                            const uint32_t def,
+                            const char *help)
+{
+    if (!fsp || !name || !help)
+    return 1;
+
+    if (ccp_flag_checkExist(fsp->registerdFlags, name))
+        return 1;
+    
+    Flag *fp = ccp_flag_init(name, help);
+    if (!fp)
+        return 1;
+
+    fp->defaultVal = malloc(sizeof(uint32_t));
+    if (!fp->defaultVal) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    memmove(fp->defaultVal, &def, sizeof(uint32_t));
+    fp->dtype = UINT32;
+
+    int err = ccp_list_append(fsp->registerdFlags, fp);
+    if (err != 0) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    return 0;
+}
+
+
+int ccp_flag_registerUInt64(FlagSet *fsp,
+                         const char *name,
+                         const uint64_t def,
+                         const char *help)
+{
+    if (!fsp || !name || !help)
+    return 1;
+
+    if (ccp_flag_checkExist(fsp->registerdFlags, name))
+        return 1;
+    
+    Flag *fp = ccp_flag_init(name, help);
+    if (!fp)
+        return 1;
+
+    fp->defaultVal = malloc(sizeof(uint64_t));
+    if (!fp->defaultVal) {
+        ccp_flag_free(fp);
+        return 1;
+    }
+    memmove(fp->defaultVal, &def, sizeof(uint64_t));
+    fp->dtype = UINT64;
 
     int err = ccp_list_append(fsp->registerdFlags, fp);
     if (err != 0) {

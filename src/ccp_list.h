@@ -15,7 +15,6 @@ FlagList *ccp_list_init();
 
 
 /**
- * WARNING!
  * add a new Flag to FlagList
  *
  * @flp: pointer to FlagList instance
@@ -39,7 +38,6 @@ Flag *ccp_list_find(FlagList *flp, const char *name);
 
 
 /**
- * WARNING!
  * free a FlagList and all of it's data (also Flags)
  *
  * @flp: pointer to FlagList instance

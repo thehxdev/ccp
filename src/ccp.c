@@ -10,6 +10,8 @@
 #include "str.h"
 
 
+#define CHECK_ENOUGH_ARGS(idx, argc) if ((idx) + 1 >= (argc)) return 4
+
 
 FlagSet *ccp_flagset_init(int argc, char *argv[]) {
     FlagSet *nfs = (FlagSet*) malloc(sizeof(FlagSet));
@@ -37,20 +39,15 @@ int ccp_flagset_free(FlagSet *fsp) {
     return 0;
 }
 
+
 int ccp_parse(FlagSet *fsp) {
     if (!fsp)
         return 1;
 
     // no arguments provided
     if (fsp->argc < 2) {
-        //ccp_print_help(fsp);
+        // ccp_print_help(fsp);
         return 1;
-    }
-
-    if (strcmp(fsp->argv[1], "-help") == 0
-        || strcmp(fsp->argv[1], "--help") == 0) {
-        ccp_print_help(fsp);
-        return 2;
     }
 
     int isFlag = 0;
@@ -60,12 +57,14 @@ int ccp_parse(FlagSet *fsp) {
         if (isFlag == 0)
             continue;
 
+        if (strcmp(fsp->argv[1] + isFlag, "help") == 0) {
+            ccp_print_help(fsp);
+            return 2;
+        }
+
         tmp = ccp_list_find(fsp->registerdFlags, (fsp->argv[i] + isFlag));
         if (!tmp) {
             // invalid command-line arg
-            // free FlagSet and return 2
-            // to exit
-            //ccp_flagset_free(fsp);
             return 3;
         }
 
@@ -74,11 +73,9 @@ int ccp_parse(FlagSet *fsp) {
             tmp->val = malloc(sizeof(bool));
             memmove(tmp->val, &tmpData, sizeof(bool));
             continue;
-        } else if (tmp->dtype == INT) {
-            if (i + 1 >= fsp->argc) {
-                //ccp_flagset_free(fsp);
-                return 4;
-            }
+        } else if (tmp->dtype == INT || tmp->dtype == INT32) {
+            CHECK_ENOUGH_ARGS(i, fsp->argc);
+
             int tmpData = 0;
             tmp->val = malloc(sizeof(int));
             if (sscanf(fsp->argv[i + 1], "%d", &tmpData) == 1) {
@@ -89,11 +86,48 @@ int ccp_parse(FlagSet *fsp) {
             }
             i++;
             continue;
-        } else if (tmp->dtype == DOUBLE) {
-            if (i + 1 >= fsp->argc) {
-                //ccp_flagset_free(fsp);
-                return 4;
+        } else if (tmp->dtype == INT64) {
+            CHECK_ENOUGH_ARGS(i, fsp->argc);
+
+            int64_t tmpData = 0;
+            tmp->val = malloc(sizeof(int));
+            if (sscanf(fsp->argv[i + 1], "%ld", &tmpData) == 1) {
+                tmpData = atoi(fsp->argv[i + 1]);
+                memmove(tmp->val, &tmpData, sizeof(int64_t));
+            } else {
+                memmove(tmp->val, tmp->defaultVal, sizeof(int64_t));
             }
+            i++;
+            continue;
+        } else if (tmp->dtype == UINT32) {
+            CHECK_ENOUGH_ARGS(i, fsp->argc);
+
+            uint32_t tmpData = 0;
+            tmp->val = malloc(sizeof(int));
+            if (sscanf(fsp->argv[i + 1], "%u", &tmpData) == 1) {
+                tmpData = atoi(fsp->argv[i + 1]);
+                memmove(tmp->val, &tmpData, sizeof(uint32_t));
+            } else {
+                memmove(tmp->val, tmp->defaultVal, sizeof(uint32_t));
+            }
+            i++;
+            continue;
+        } else if (tmp->dtype == UINT64) {
+            CHECK_ENOUGH_ARGS(i, fsp->argc);
+
+            uint64_t tmpData = 0;
+            tmp->val = malloc(sizeof(int));
+            if (sscanf(fsp->argv[i + 1], "%lu", &tmpData) == 1) {
+                tmpData = atoi(fsp->argv[i + 1]);
+                memmove(tmp->val, &tmpData, sizeof(uint64_t));
+            } else {
+                memmove(tmp->val, tmp->defaultVal, sizeof(uint64_t));
+            }
+            i++;
+            continue;
+        } else if (tmp->dtype == DOUBLE) {
+            CHECK_ENOUGH_ARGS(i, fsp->argc);
+
             double tmpData = 0.0;
             tmp->val = malloc(sizeof(double));
             if (sscanf(fsp->argv[i + 1], "%lf", &tmpData) == 1) {
@@ -105,10 +139,8 @@ int ccp_parse(FlagSet *fsp) {
             i++;
             continue;
         } else if (tmp->dtype == STRING) {
-            if (i + 1 >= fsp->argc) {
-                //ccp_flagset_free(fsp);
-                return 4;
-            }
+            CHECK_ENOUGH_ARGS(i, fsp->argc);
+
             tmp->val = calloc(sizeof(char), strlen(fsp->argv[i + 1]) + 1);
             strcpy(tmp->val, fsp->argv[i + 1]);
             i++;
@@ -165,7 +197,17 @@ int ccp_print_help(FlagSet *fsp) {
                 break;
 
             case INT:
+            case INT32:
                 printf("  -%s: %s (default: %d)\n", tmp->name, tmp->help, *(int*)tmp->defaultVal); break;
+
+            case INT64:
+                printf("  -%s: %s (default: %ld)\n", tmp->name, tmp->help, *(int64_t*)tmp->defaultVal); break;
+
+            case UINT32:
+                printf("  -%s: %s (default: %u)\n", tmp->name, tmp->help, *(uint32_t*)tmp->defaultVal); break;
+
+            case UINT64:
+                printf("  -%s: %s (default: %lu)\n", tmp->name, tmp->help, *(uint64_t*)tmp->defaultVal); break;
 
             case STRING:
                 printf("  -%s: %s (default: %s)\n", tmp->name, tmp->help, (char*)tmp->defaultVal); break;

@@ -7,8 +7,8 @@ OBJS := ccp.o ccp_flag.o ccp_list.o str.o
 LIBCCP_A  := libccp.a
 
 CC := gcc
-FLAGS := -std=c17 -Wall -Wextra
-FLAGS += -Werror -Wno-unused-result -Wno-unused-variable
+CFLAGS := -std=c17 -Wall -Wextra -ggdb
+CFLAGS += -Werror -Wno-unused-result
 
 
 $(LIBCCP_A): dir $(OBJS)
@@ -18,11 +18,11 @@ $(LIBCCP_A): dir $(OBJS)
 
 %.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJS_DIR)
-	$(CC) $(FLAGS) -c -o $(OBJS_DIR)/$*.o $(SRC_DIR)/$*.c
+	$(CC) $(CFLAGS) -c -o $(OBJS_DIR)/$*.o $(SRC_DIR)/$*.c
 
 
 example: example.c $(LIBCCP_A)
-	$(CC) $(FLAGS) -I$(OUT_HEADERS_DIR) -o example.o -c $<
+	$(CC) $(CFLAGS) -I$(OUT_HEADERS_DIR) -o example.o -c $<
 	$(CC) -o example ./example.o -L$(OUT_DIR) -lccp
 
 dir:
