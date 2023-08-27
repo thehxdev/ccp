@@ -40,9 +40,9 @@ int ccp_ht_addflag(CCP_HT *htp, const char *key, Flag *fp) {
         return 1;
     size_t idx = ccp_ht_make_hash(key);
 
-    htp->flags[idx] = malloc(sizeof(Flag));
-    if (htp->flags[idx] == NULL) 
-        return 2;
+    //htp->flags[idx] = malloc(sizeof(Flag*));
+    //if (htp->flags[idx] == NULL) 
+    //    return 2;
     htp->flags[idx] = fp;
 
     htp->keys[htp->len] = calloc(sizeof(char), strlen(key) + 1);
@@ -62,12 +62,12 @@ int ccp_ht_free(CCP_HT *htp, void (*fn) (Flag *p)) {
     if (htp == NULL)
         return 1;
 
-    size_t hash = 0;
+    size_t idx = 0;
     for (size_t i = 0; i < htp->len; i++) {
-        hash = ccp_ht_make_hash(htp->keys[i]);
+        idx = ccp_ht_make_hash(htp->keys[i]);
         free(htp->keys[i]);
-        fn(htp->flags[hash]);
-        htp->flags[hash] = NULL;
+        fn(htp->flags[idx]);
+        htp->flags[idx] = NULL;
     }
 
     free(htp);

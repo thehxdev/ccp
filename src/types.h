@@ -48,13 +48,6 @@ typedef struct __ccp_ht {
 } CCP_HT;
 
 
-// a doubly linked-list to store flags
-typedef struct __ccp_flatlist {
-    Flag *head;
-    Flag *tail;
-} FlagList;
-
-
 // a struct to store all of the information
 // about flags and data
 typedef struct __flagset {

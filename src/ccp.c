@@ -34,7 +34,6 @@ int ccp_flagset_free(FlagSet *fsp) {
     if (!fsp)
         return 1;
 
-    //ccp_list_free(fsp->registerdFlags);
     ccp_ht_free(fsp->registerdFlags, ccp_flag_free);
     free(fsp);
     return 0;
