@@ -2,8 +2,8 @@
 #include <string.h>
 
 // CCP
-#include "ccp_flag.h"
-#include "ccp_ht.h"
+#include "flag.h"
+#include "ht.h"
 #include "str.h"
 #include "macros.h"
 

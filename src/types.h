@@ -51,7 +51,6 @@ typedef struct __ccp_ht {
 // a struct to store all of the information
 // about flags and data
 typedef struct __flagset {
-    //FlagList *registerdFlags;
     CCP_HT *registerdFlags;
     char **argv;
     int argc;

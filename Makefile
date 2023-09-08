@@ -9,7 +9,8 @@ LIBCCP_A  := $(OUT_DIR)/libccp.a
 CC := gcc
 CFLAGS := -std=c17 -Wall -Wextra
 CFLAGS += -Werror -Wno-unused-result
-CFLAGS += -ggdb -Og
+#CFLAGS += -ggdb -Og
+CFLAGS += -O2
 LIBS := -L$(OUT_DIR) -lccp
 
 
