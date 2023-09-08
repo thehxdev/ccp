@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <memory.h>
 
-#include "ccp_ht.h"
+#include "ht.h"
 
 
 size_t ccp_ht_make_hash(const char *key) {
